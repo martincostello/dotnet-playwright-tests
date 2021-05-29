@@ -50,7 +50,7 @@ namespace PlaywrightTests
                 await page.WaitForSelectorAsync("id=b_content");
 
                 // Click through to the desired result
-                await page.ClickAsync("css=a:has-text(\"Download .NET (Linux, macOS, and Windows)\")");
+                await page.ClickAsync("a:has-text(\".NET Core\")");
             });
         }
     }
