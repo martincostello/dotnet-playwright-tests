@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Playwright;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -31,9 +32,15 @@ namespace PlaywrightTests
             {
                 // Open the search engine
                 await page.GotoAsync("https://www.bing.com/");
+                await page.WaitForLoadStateAsync();
 
                 // Dismiss any cookies dialog
-                await page.ClickAsync("id=bnp_btn_accept");
+                IElementHandle element = await page.QuerySelectorAsync("id=bnp_btn_accept");
+
+                if (element is not null)
+                {
+                    await element.ClickAsync();
+                }
 
                 // Search for the desired term
                 await page.TypeAsync("[name='q']", ".net core");
