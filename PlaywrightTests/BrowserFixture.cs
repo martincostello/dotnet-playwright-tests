@@ -83,6 +83,15 @@ namespace PlaywrightTests
                 options.SlowMo = 100;
             }
 
+            string[] split = browserType.Split(':');
+
+            browserType = split[0];
+
+            if (split.Length > 1)
+            {
+                options.Channel = split[1];
+            }
+
             return await playwright[browserType].LaunchAsync(options);
         }
 
