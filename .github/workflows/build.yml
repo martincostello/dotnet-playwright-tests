@@ -24,6 +24,13 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
 
+    - name: Install Playwright CLI and browsers
+      shell: pwsh
+      run: |
+        dotnet tool install --global Microsoft.Playwright.CLI
+        cd ./PlaywrightTests
+        playwright install
+
     - name: Build and Test
       shell: pwsh
       run: ./build.ps1
