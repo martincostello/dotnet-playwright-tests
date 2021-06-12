@@ -12,6 +12,6 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" />
   </ItemGroup>
   <Target Name="DownloadBrowserDrivers" AfterTargets="Build">
-    <Exec Command="playwright install" />
+    <Exec Command="playwright install" WorkingDirectory="$(MSBuildThisFileDirectory)\..\" />
   </Target>
 </Project>
