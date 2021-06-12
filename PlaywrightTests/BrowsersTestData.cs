@@ -12,7 +12,11 @@ namespace PlaywrightTests
         public IEnumerator<object[]> GetEnumerator()
         {
             yield return new object[] { "chromium" };
-            yield return new object[] { "chromium:chrome" };
+
+            if (!OperatingSystem.IsWindows())
+            {
+                yield return new object[] { "chromium:chrome" };
+            }
 
             if (!OperatingSystem.IsLinux())
             {
