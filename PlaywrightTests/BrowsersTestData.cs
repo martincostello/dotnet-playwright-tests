@@ -4,6 +4,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Playwright;
 
 namespace PlaywrightTests
 {
@@ -11,23 +12,23 @@ namespace PlaywrightTests
     {
         public IEnumerator<object[]> GetEnumerator()
         {
-            yield return new object[] { "chromium" };
+            yield return new[] { BrowserType.Chromium };
 
             if (!OperatingSystem.IsWindows())
             {
-                yield return new object[] { "chromium:chrome" };
+                yield return new[] { BrowserType.Chromium + ":chrome" };
             }
 
             if (!OperatingSystem.IsLinux())
             {
-                yield return new object[] { "chromium:msedge" };
+                yield return new[] { BrowserType.Chromium + ":msedge" };
             }
 
-            yield return new object[] { "firefox" };
+            yield return new object[] { BrowserType.Firefox };
 
             if (OperatingSystem.IsMacOS())
             {
-                yield return new object[] { "webkit" };
+                yield return new object[] { BrowserType.Webkit };
             }
         }
 
