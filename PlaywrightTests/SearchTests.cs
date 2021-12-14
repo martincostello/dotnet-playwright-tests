@@ -25,11 +25,11 @@ public class SearchTests
         await browser.WithPageAsync(browserType, async (page) =>
         {
             // Open the search engine
-            await page.GotoAsync("https://www.bing.com/");
+            await page.GotoAsync("https://www.google.com/");
             await page.WaitForLoadStateAsync();
 
             // Dismiss any cookies dialog
-            IElementHandle element = await page.QuerySelectorAsync("id=bnp_btn_accept");
+            IElementHandle element = await page.QuerySelectorAsync("text='I agree'");
 
             if (element is not null)
             {
@@ -41,10 +41,10 @@ public class SearchTests
             await page.Keyboard.PressAsync("Enter");
 
             // Wait for the results to load
-            await page.WaitForSelectorAsync("id=b_content");
+            await page.WaitForSelectorAsync("id=main");
 
             // Click through to the desired result
-            await page.ClickAsync("a:has-text(\".NET Core\")");
+            await page.ClickAsync("a:has-text(\".NET\")");
         });
     }
 }
