@@ -4,32 +4,31 @@
 using System.Collections;
 using Microsoft.Playwright;
 
-namespace PlaywrightTests
+namespace PlaywrightTests;
+
+public sealed class BrowsersTestData : IEnumerable<object[]>
 {
-    public sealed class BrowsersTestData : IEnumerable<object[]>
+    public IEnumerator<object[]> GetEnumerator()
     {
-        public IEnumerator<object[]> GetEnumerator()
+        yield return new[] { BrowserType.Chromium };
+
+        if (!OperatingSystem.IsWindows())
         {
-            yield return new[] { BrowserType.Chromium };
-
-            if (!OperatingSystem.IsWindows())
-            {
-                yield return new[] { BrowserType.Chromium + ":chrome" };
-            }
-
-            if (!OperatingSystem.IsLinux())
-            {
-                yield return new[] { BrowserType.Chromium + ":msedge" };
-            }
-
-            yield return new object[] { BrowserType.Firefox };
-
-            if (OperatingSystem.IsMacOS())
-            {
-                yield return new object[] { BrowserType.Webkit };
-            }
+            yield return new[] { BrowserType.Chromium + ":chrome" };
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        if (!OperatingSystem.IsLinux())
+        {
+            yield return new[] { BrowserType.Chromium + ":msedge" };
+        }
+
+        yield return new object[] { BrowserType.Firefox };
+
+        if (OperatingSystem.IsMacOS())
+        {
+            yield return new object[] { BrowserType.Webkit };
+        }
     }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
