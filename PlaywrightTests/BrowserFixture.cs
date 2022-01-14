@@ -62,7 +62,7 @@ public class BrowserFixture
 
         if (IsRunningInGitHubActions)
         {
-            options.RecordVideoDir = "videos";
+            options.RecordVideoDir = Path.GetTempPath();
         }
 
         return options;
@@ -143,18 +143,12 @@ public class BrowserFixture
         {
             await page.CloseAsync();
 
-            string videoSource = await page.Video.PathAsync();
+            string fileName = GenerateFileName(testName, browserType, ".webm");
+            string path = Path.Combine("videos", fileName);
 
-            string directory = Path.GetDirectoryName(videoSource);
-            string extension = Path.GetExtension(videoSource);
+            await page.Video.SaveAsAsync(path);
 
-            string fileName = GenerateFileName(testName, browserType, extension!);
-
-            string videoDestination = Path.Combine(directory!, fileName);
-
-            File.Move(videoSource, videoDestination);
-
-            OutputHelper.WriteLine($"Video saved to {videoDestination}.");
+            OutputHelper.WriteLine($"Video saved to {path}.");
         }
         catch (Exception ex)
         {
