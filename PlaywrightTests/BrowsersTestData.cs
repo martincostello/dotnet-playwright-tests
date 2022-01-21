@@ -10,23 +10,23 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 {
     public IEnumerator<object[]> GetEnumerator()
     {
-        yield return new[] { BrowserType.Chromium };
+        yield return new[] { BrowserType.Chromium, null };
 
         if (!OperatingSystem.IsWindows())
         {
-            yield return new[] { BrowserType.Chromium + ":chrome" };
+            yield return new[] { BrowserType.Chromium, "chrome" };
         }
 
         if (!OperatingSystem.IsLinux())
         {
-            yield return new[] { BrowserType.Chromium + ":msedge" };
+            yield return new[] { BrowserType.Chromium, "msedge" };
         }
 
-        yield return new object[] { BrowserType.Firefox };
+        yield return new object[] { BrowserType.Firefox, null };
 
         if (OperatingSystem.IsMacOS())
         {
-            yield return new object[] { BrowserType.Webkit };
+            yield return new object[] { BrowserType.Webkit, null };
         }
     }
 
