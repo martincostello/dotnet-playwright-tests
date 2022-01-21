@@ -131,6 +131,7 @@ public class BrowserFixture
                 ["name"] = Options.TestName ?? testName,
                 ["os"] = Options.OperatingSystem,
                 ["os_version"] = Options.OperatingSystemVersion,
+                ["project"] = Options.ProjectName,
             };
 
             // Serialize the capabilities as a JSON blob and pass to the

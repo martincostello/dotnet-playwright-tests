@@ -39,6 +39,11 @@ public class BrowserFixtureOptions
     public string PlaywrightVersion { get; set; }
 
     /// <summary>
+    /// Gets or sets the optional project name.
+    /// </summary>
+    public string ProjectName { get; set; }
+
+    /// <summary>
     /// Gets or sets the optional test name.
     /// </summary>
     public string TestName { get; set; }
