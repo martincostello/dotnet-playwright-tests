@@ -16,7 +16,7 @@ public class SearchTests
 
     private ITestOutputHelper OutputHelper { get; }
 
-    [Theory(Timeout = 30_000)]
+    [Theory(Timeout = 45_000)]
     [ClassData(typeof(BrowsersTestData))]
     public async Task Search_For_DotNet_Core(string browserType, string browserChannel)
     {
