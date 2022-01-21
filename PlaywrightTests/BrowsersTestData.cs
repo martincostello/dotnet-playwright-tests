@@ -18,10 +18,7 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 
     public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
 
-    public static bool UseBrowserStack { get; } =
-        BrowserStackCredentials() != default &&
-        // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
-        (!IsRunningInGitHubActions || OperatingSystem.IsWindows());
+    public static bool UseBrowserStack { get; } = UseBrowserStackForTests();
 
     public IEnumerator<object[]> GetEnumerator()
     {
@@ -46,4 +43,17 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
     }
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+    private static bool UseBrowserStackForTests()
+    {
+        bool useBrowserStack = BrowserStackCredentials() != default;
+
+        // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
+        if (useBrowserStack && IsRunningInGitHubActions && !OperatingSystem.IsWindows())
+        {
+            useBrowserStack = false;
+        }
+
+        return useBrowserStack;
+    }
 }
