@@ -39,6 +39,8 @@ jobs:
       shell: pwsh
       run: ./build.ps1
       env:
+        BROWSERSTACK_USERNAME: {{ $env:BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_TOKEN: {{ $env:BROWSERSTACK_TOKEN }}
         DOTNET_CLI_TELEMETRY_OPTOUT: true
         DOTNET_NOLOGO: true
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
