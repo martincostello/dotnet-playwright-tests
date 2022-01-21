@@ -72,9 +72,7 @@ public class BrowserFixture
         return options;
     }
 
-    private async Task<IBrowser> CreateBrowserAsync(
-        IPlaywright playwright,
-        [CallerMemberName] string testName = null)
+    private async Task<IBrowser> CreateBrowserAsync(IPlaywright playwright, string testName)
     {
         var options = new BrowserTypeLaunchOptions()
         {
