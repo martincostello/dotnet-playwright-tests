@@ -20,6 +20,11 @@ public class SearchTests
     [ClassData(typeof(BrowsersTestData))]
     public async Task Search_For_DotNet_Core(string browserType, string browserChannel)
     {
+        OutputHelper.WriteLine("BrowserStack UserName Present: {0}", !string.IsNullOrWhiteSpace(BrowsersTestData.BrowserStackCredentials().UserName));
+        OutputHelper.WriteLine("BrowserStack AccessToken Present: {0}", !string.IsNullOrWhiteSpace(BrowsersTestData.BrowserStackCredentials().AccessToken));
+        OutputHelper.WriteLine("BrowsersTestData.IsRunningInGitHubActions: {0}", BrowsersTestData.IsRunningInGitHubActions);
+        OutputHelper.WriteLine("OperatingSystem.IsWindows(): {0}", OperatingSystem.IsWindows());
+
         // Configure the options to use with the fixture for this test
         var options = new BrowserFixtureOptions()
         {
