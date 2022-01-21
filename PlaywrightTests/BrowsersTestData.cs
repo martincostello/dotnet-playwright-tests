@@ -8,25 +8,39 @@ namespace PlaywrightTests;
 
 public sealed class BrowsersTestData : IEnumerable<object[]>
 {
+    public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
+
+    public static bool UseBrowserStack => BrowserStackCredentials() != default;
+
+    public static (string UserName, string AccessToken) BrowserStackCredentials()
+    {
+        string userName = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
+        string accessToken = Environment.GetEnvironmentVariable("BROWSERSTACK_TOKEN");
+
+        return (userName, accessToken);
+    }
+
     public IEnumerator<object[]> GetEnumerator()
     {
-        yield return new[] { BrowserType.Chromium };
+        bool useBrowserStack = UseBrowserStack;
 
-        if (!OperatingSystem.IsWindows())
+        yield return new[] { BrowserType.Chromium, null };
+
+        if (useBrowserStack || !OperatingSystem.IsWindows())
         {
-            yield return new[] { BrowserType.Chromium + ":chrome" };
+            yield return new[] { BrowserType.Chromium, "chrome" };
         }
 
-        if (!OperatingSystem.IsLinux())
+        if (useBrowserStack || !OperatingSystem.IsLinux())
         {
-            yield return new[] { BrowserType.Chromium + ":msedge" };
+            yield return new[] { BrowserType.Chromium, "msedge" };
         }
 
-        yield return new object[] { BrowserType.Firefox };
+        yield return new object[] { BrowserType.Firefox, null };
 
-        if (OperatingSystem.IsMacOS())
+        if (useBrowserStack || OperatingSystem.IsMacOS())
         {
-            yield return new object[] { BrowserType.Webkit };
+            yield return new object[] { BrowserType.Webkit, null };
         }
     }
 

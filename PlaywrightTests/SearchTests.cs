@@ -16,13 +16,26 @@ public class SearchTests
 
     private ITestOutputHelper OutputHelper { get; }
 
-    [Theory]
+    [Theory(Timeout = 45_000)]
     [ClassData(typeof(BrowsersTestData))]
-    public async Task Search_For_DotNet_Core(string browserType)
+    public async Task Search_For_DotNet_Core(string browserType, string browserChannel)
     {
+        // Configure the options to use with the fixture for this test
+        var options = new BrowserFixtureOptions()
+        {
+            BrowserType = browserType,
+            BrowserChannel = browserChannel,
+        };
+
+        if (BrowsersTestData.UseBrowserStack)
+        {
+            options.BrowserStackCredentials = BrowsersTestData.BrowserStackCredentials();
+            options.UseBrowserStack = true;
+        }
+
         // Create fixture that will provide an IPage to use for the test
-        var browser = new BrowserFixture(OutputHelper);
-        await browser.WithPageAsync(browserType, async (page) =>
+        var browser = new BrowserFixture(options, OutputHelper);
+        await browser.WithPageAsync(async (page) =>
         {
             // Open the search engine
             await page.GotoAsync("https://www.google.com/");
