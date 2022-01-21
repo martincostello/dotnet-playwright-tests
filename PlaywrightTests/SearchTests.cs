@@ -25,8 +25,6 @@ public class SearchTests
         {
             BrowserType = browserType,
             BrowserChannel = browserChannel,
-            Build = GetType().Assembly.GetName().Version.ToString(3),
-            ProjectName = "dotnet-playwright-tests",
         };
 
         // Use BrowserStack if credentials are configured

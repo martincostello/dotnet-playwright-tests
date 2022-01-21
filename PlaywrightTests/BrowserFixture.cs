@@ -126,12 +126,12 @@ public class BrowserFixture
                 ["browser"] = browser,
                 ["browserstack.accessKey"] = Options.BrowserStackCredentials.AccessKey,
                 ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
-                ["build"] = Options.Build,
+                ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
                 ["name"] = Options.TestName ?? testName,
                 ["os"] = Options.OperatingSystem,
                 ["os_version"] = Options.OperatingSystemVersion,
-                ["project"] = Options.ProjectName,
+                ["project"] = Options.ProjectName ?? GetDefaultProject(),
             };
 
             // Serialize the capabilities as a JSON blob and pass to the
@@ -149,6 +149,30 @@ public class BrowserFixture
         }
 
         return await browserType.LaunchAsync(options);
+    }
+
+    private static string GetDefaultBuildNumber()
+    {
+        string build = Environment.GetEnvironmentVariable("GITHUB_RUN_NUMBER");
+
+        if (!string.IsNullOrEmpty(build))
+        {
+            return build;
+        }
+
+        return typeof(BrowserFixture).Assembly.GetName().Version.ToString(3);
+    }
+
+    private static string GetDefaultProject()
+    {
+        string project = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY");
+
+        if (!string.IsNullOrEmpty(project))
+        {
+            return project.Split('/')[1];
+        }
+
+        return "dotnet-playwright-tests";
     }
 
     private string GenerateFileName(string testName, string extension)
