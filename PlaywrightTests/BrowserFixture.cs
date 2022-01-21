@@ -219,6 +219,8 @@ public class BrowserFixture
         IPage page,
         string testName)
     {
+        // HACK The call to SaveAsAsync() hangs when used with BrowserStack.
+        // https://github.com/martincostello/dotnet-playwright-tests/pull/34#issuecomment-1018689977
         if (!BrowsersTestData.IsRunningInGitHubActions || BrowsersTestData.UseBrowserStack)
         {
             return;
