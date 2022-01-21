@@ -18,31 +18,28 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 
     public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
 
+    public static bool UseBrowserStack { get; } =
+        BrowserStackCredentials() != default &&
+        // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
+        (!IsRunningInGitHubActions || OperatingSystem.IsWindows());
+
     public IEnumerator<object[]> GetEnumerator()
     {
-        bool useBrowserStack = BrowserStackCredentials() != default;
-
-        // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
-        if (useBrowserStack && IsRunningInGitHubActions && !OperatingSystem.IsWindows())
-        {
-            useBrowserStack = false;
-        }
-
         yield return new[] { BrowserType.Chromium, null };
 
-        if (useBrowserStack || !OperatingSystem.IsWindows())
+        if (UseBrowserStack || !OperatingSystem.IsWindows())
         {
             yield return new[] { BrowserType.Chromium, "chrome" };
         }
 
-        if (useBrowserStack || !OperatingSystem.IsLinux())
+        if (UseBrowserStack || !OperatingSystem.IsLinux())
         {
             yield return new[] { BrowserType.Chromium, "msedge" };
         }
 
         yield return new object[] { BrowserType.Firefox, null };
 
-        if (useBrowserStack || OperatingSystem.IsMacOS())
+        if (UseBrowserStack || OperatingSystem.IsMacOS())
         {
             yield return new object[] { BrowserType.Webkit, null };
         }

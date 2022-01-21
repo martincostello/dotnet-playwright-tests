@@ -27,12 +27,9 @@ public class SearchTests
             BrowserChannel = browserChannel,
         };
 
-        // Use BrowserStack if credentials are configured
-        var credentials = BrowsersTestData.BrowserStackCredentials();
-
-        if (credentials != default)
+        if (BrowsersTestData.UseBrowserStack)
         {
-            options.BrowserStackCredentials = credentials;
+            options.BrowserStackCredentials = BrowsersTestData.BrowserStackCredentials();
             options.UseBrowserStack = true;
         }
 
