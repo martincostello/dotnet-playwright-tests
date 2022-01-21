@@ -31,16 +31,15 @@ jobs:
 
     - name: Configure BrowserStack credentials
       if: ${{ github.repository_owner == 'martincostello' }}
+      shell: pwsh
       run: |
-        echo "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" >> $GITHUB_ENV
-        echo "BROWSERSTACK_TOKEN=${{ secrets.BROWSERSTACK_TOKEN }}" >> $GITHUB_ENV
+        Write-Output "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        Write-Output "BROWSERSTACK_TOKEN=${{ secrets.BROWSERSTACK_TOKEN }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
     - name: Build and Test
       shell: pwsh
       run: ./build.ps1
       env:
-        BROWSERSTACK_USERNAME: ${{ env.BROWSERSTACK_USERNAME }}
-        BROWSERSTACK_TOKEN: ${{ env.BROWSERSTACK_TOKEN }}
         DOTNET_CLI_TELEMETRY_OPTOUT: true
         DOTNET_NOLOGO: true
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
