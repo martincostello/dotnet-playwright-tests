@@ -20,8 +20,6 @@ public class BrowserFixture
         OutputHelper = outputHelper;
     }
 
-    private static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
-
     private BrowserFixtureOptions Options { get; }
 
     private ITestOutputHelper OutputHelper { get; }
@@ -66,7 +64,7 @@ public class BrowserFixture
             TimezoneId = "Europe/London",
         };
 
-        if (IsRunningInGitHubActions)
+        if (BrowsersTestData.IsRunningInGitHubActions)
         {
             options.RecordVideoDir = Path.GetTempPath();
         }
@@ -221,7 +219,7 @@ public class BrowserFixture
         IPage page,
         string testName)
     {
-        if (!IsRunningInGitHubActions)
+        if (!BrowsersTestData.IsRunningInGitHubActions)
         {
             return;
         }

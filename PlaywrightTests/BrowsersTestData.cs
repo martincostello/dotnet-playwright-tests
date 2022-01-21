@@ -16,9 +16,17 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
         return (browserStackUserName, browserStackToken);
     }
 
+    public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
+
     public IEnumerator<object[]> GetEnumerator()
     {
         bool useBrowserStack = BrowserStackCredentials() != default;
+
+        // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
+        if (useBrowserStack && IsRunningInGitHubActions && !OperatingSystem.IsWindows())
+        {
+            useBrowserStack = false;
+        }
 
         yield return new[] { BrowserType.Chromium, null };
 
