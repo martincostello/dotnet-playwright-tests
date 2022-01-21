@@ -30,7 +30,7 @@ jobs:
         dotnet tool install --global Microsoft.Playwright.CLI
 
     - name: Configure BrowserStack credentials
-      if: ${{ github.repository_owner == 'martincostello' }}
+      if: ${{ github.repository_owner == 'martincostello' && github.actor == 'martincostello' }}
       shell: pwsh
       run: |
         Write-Output "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
