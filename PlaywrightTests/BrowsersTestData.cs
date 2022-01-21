@@ -8,23 +8,33 @@ namespace PlaywrightTests;
 
 public sealed class BrowsersTestData : IEnumerable<object[]>
 {
+    public static (string UserName, string AccessToken) BrowserStackCredentials()
+    {
+        string browserStackUserName = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
+        string browserStackToken = Environment.GetEnvironmentVariable("BROWSERSTACK_TOKEN");
+
+        return (browserStackUserName, browserStackToken);
+    }
+
     public IEnumerator<object[]> GetEnumerator()
     {
+        bool useBrowserStack = BrowserStackCredentials() != default;
+
         yield return new[] { BrowserType.Chromium, null };
 
-        if (!OperatingSystem.IsWindows())
+        if (useBrowserStack || !OperatingSystem.IsWindows())
         {
             yield return new[] { BrowserType.Chromium, "chrome" };
         }
 
-        if (!OperatingSystem.IsLinux())
+        if (useBrowserStack || !OperatingSystem.IsLinux())
         {
             yield return new[] { BrowserType.Chromium, "msedge" };
         }
 
         yield return new object[] { BrowserType.Firefox, null };
 
-        if (OperatingSystem.IsMacOS())
+        if (useBrowserStack || OperatingSystem.IsMacOS())
         {
             yield return new object[] { BrowserType.Webkit, null };
         }

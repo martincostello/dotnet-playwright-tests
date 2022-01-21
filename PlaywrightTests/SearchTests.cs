@@ -28,13 +28,11 @@ public class SearchTests
         };
 
         // Use BrowserStack if credentials are configured
-        string browserStackUserName = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
-        string browserStackToken = Environment.GetEnvironmentVariable("BROWSERSTACK_TOKEN");
+        var credentials = BrowsersTestData.BrowserStackCredentials();
 
-        if (!string.IsNullOrEmpty(browserStackUserName) &&
-            !string.IsNullOrEmpty(browserStackToken))
+        if (credentials != default)
         {
-            options.BrowserStackCredentials = (browserStackUserName, browserStackToken);
+            options.BrowserStackCredentials = credentials;
             options.UseBrowserStack = true;
         }
 
