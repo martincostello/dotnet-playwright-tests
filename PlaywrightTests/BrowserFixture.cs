@@ -12,6 +12,8 @@ namespace PlaywrightTests;
 
 public class BrowserFixture
 {
+    private const string VideosDirectory = "videos";
+
     public BrowserFixture(
         BrowserFixtureOptions options,
         ITestOutputHelper outputHelper)
@@ -80,7 +82,12 @@ public class BrowserFixture
 
                 string extension = Path.GetExtension(response.Content.Headers.ContentDisposition.FileName);
                 string fileName = GenerateFileName(testName, extension);
-                string path = Path.Combine("videos", fileName);
+                string path = Path.Combine(VideosDirectory, fileName);
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(VideosDirectory);
+                }
 
                 using var file = File.OpenWrite(path);
 
@@ -262,7 +269,7 @@ public class BrowserFixture
         try
         {
             string fileName = GenerateFileName(testName, ".webm");
-            string path = Path.Combine("videos", fileName);
+            string path = Path.Combine(VideosDirectory, fileName);
 
             if (BrowsersTestData.UseBrowserStack)
             {
