@@ -219,7 +219,7 @@ public class BrowserFixture
         IPage page,
         string testName)
     {
-        if (!BrowsersTestData.IsRunningInGitHubActions)
+        if (!BrowsersTestData.IsRunningInGitHubActions || BrowsersTestData.UseBrowserStack)
         {
             return;
         }
