@@ -14,10 +14,10 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 
     public static (string UserName, string AccessToken) BrowserStackCredentials()
     {
-        string browserStackUserName = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
-        string browserStackToken = Environment.GetEnvironmentVariable("BROWSERSTACK_TOKEN");
+        string userName = Environment.GetEnvironmentVariable("BROWSERSTACK_USERNAME");
+        string accessToken = Environment.GetEnvironmentVariable("BROWSERSTACK_TOKEN");
 
-        return (browserStackUserName, browserStackToken);
+        return (userName, accessToken);
     }
 
     public IEnumerator<object[]> GetEnumerator()
