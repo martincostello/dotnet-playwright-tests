@@ -51,10 +51,10 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
         bool useBrowserStack = BrowserStackCredentials() != default;
 
         // HACK Something is hanging when using BrowserStack on non-Windows operating systems in GitHub Actions
-        ////if (useBrowserStack && IsRunningInGitHubActions && !OperatingSystem.IsWindows())
-        ////{
-        ////    useBrowserStack = false;
-        ////}
+        if (useBrowserStack && IsRunningInGitHubActions)
+        {
+            useBrowserStack = OperatingSystem.IsWindows();
+        }
 
         return useBrowserStack;
     }
