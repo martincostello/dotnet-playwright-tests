@@ -38,6 +38,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".vscode", ".vscode", "{E854CBCB-D39E-4FBB-9850-A9C560D1859F}"
+	ProjectSection(SolutionItems) = preProject
+		.vscode\extensions.json = .vscode\extensions.json
+		.vscode\launch.json = .vscode\launch.json
+		.vscode\settings.json = .vscode\settings.json
+		.vscode\tasks.json = .vscode\tasks.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +64,7 @@ Global
 		{EDD992DA-062D-4D22-903A-0B024DEB584C} = {7840BBC9-12CD-40C5-A416-E9EB5F1556C5}
 		{9C344665-5819-4546-98DF-5D5AB72F2F25} = {EDD992DA-062D-4D22-903A-0B024DEB584C}
 		{F0D79B42-C505-4D26-A222-3E02CF769AE4} = {EDD992DA-062D-4D22-903A-0B024DEB584C}
+		{E854CBCB-D39E-4FBB-9850-A9C560D1859F} = {7840BBC9-12CD-40C5-A416-E9EB5F1556C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B5536C5-C921-4061-81F5-242B17F6C38B}
