@@ -49,10 +49,17 @@ public class BrowserFixture
             {
                 // Run the test, passing the page to it
                 await action(page);
+
+                // Set the BrowserStack test status, if in use
+                await TrySetSessionStatusAsync(page, "passed");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                // Try and capture a screenshot at the point the test failed
                 await TryCaptureScreenshotAsync(page, Options.TestName ?? testName);
+
+                // Set the BrowserStack test status, if in use
+                await TrySetSessionStatusAsync(page, "failed", ex.Message);
                 throw;
             }
             finally
@@ -213,6 +220,27 @@ public class BrowserFixture
         }
 
         return "dotnet-playwright-tests";
+    }
+
+    private static async Task TrySetSessionStatusAsync(IPage page, string status, string reason = "")
+    {
+        if (!BrowsersTestData.UseBrowserStack)
+        {
+            return;
+        }
+
+        // See https://www.browserstack.com/docs/automate/playwright/mark-test-status#mark-the-status-of-your-playwright-test-using-rest-api-duringafter-the-test-script-run
+        string json = JsonSerializer.Serialize(new
+        {
+            action = "setSessionStatus",
+            arguments = new
+            {
+                status,
+                reason
+            }
+        });
+
+        await page.EvaluateAsync("_ => {}", $"browserstack_executor: {json}");
     }
 
     private string GenerateFileName(string testName, string extension)
