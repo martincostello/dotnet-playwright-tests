@@ -72,38 +72,7 @@ public class BrowserFixture
         {
             // For BrowserStack Automate we need to fetch and save the video after the browser
             // is disposed of as we can't get the video while the session is still running.
-            using var client = new HttpClient();
-
-            for (int i = 0; i < 10; i++)
-            {
-                using var response = await client.GetAsync(videoUrl);
-
-                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
-                    // The video may take a few seconds to be available
-                    await Task.Delay(TimeSpan.FromSeconds(2));
-                    continue;
-                }
-
-                response.EnsureSuccessStatusCode();
-
-                string extension = Path.GetExtension(response.Content.Headers.ContentDisposition.FileName);
-                string fileName = GenerateFileName(testName, extension);
-                string path = Path.Combine(VideosDirectory, fileName);
-
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(VideosDirectory);
-                }
-
-                using var file = File.OpenWrite(path);
-
-                using var stream = response.Content.ReadAsStream();
-                await stream.CopyToAsync(file);
-
-                OutputHelper.WriteLine($"Video saved to {path}.");
-                break;
-            }
+            await CaptureBrowserStackVideoAsync(videoUrl, Options.TestName ?? testName);
         }
     }
 
@@ -222,9 +191,9 @@ public class BrowserFixture
         return "dotnet-playwright-tests";
     }
 
-    private static async Task TrySetSessionStatusAsync(IPage page, string status, string reason = "")
+    private async Task TrySetSessionStatusAsync(IPage page, string status, string reason = "")
     {
-        if (!BrowsersTestData.UseBrowserStack)
+        if (!Options.UseBrowserStack)
         {
             return;
         }
@@ -289,7 +258,7 @@ public class BrowserFixture
         IPage page,
         string testName)
     {
-        if (!BrowsersTestData.IsRunningInGitHubActions)
+        if (!BrowsersTestData.IsRunningInGitHubActions || page.Video is null)
         {
             return null;
         }
@@ -299,7 +268,7 @@ public class BrowserFixture
             string fileName = GenerateFileName(testName, ".webm");
             string path = Path.Combine(VideosDirectory, fileName);
 
-            if (BrowsersTestData.UseBrowserStack)
+            if (Options.UseBrowserStack)
             {
                 // BrowserStack Automate does not stop the video until the session has ended, so there
                 // is no way to get the video to save it to a file, other than after the browser session
@@ -324,6 +293,42 @@ public class BrowserFixture
         {
             OutputHelper.WriteLine("Failed to capture video: " + ex);
             return null;
+        }
+    }
+
+    private async Task CaptureBrowserStackVideoAsync(string videoUrl, string testName)
+    {
+        using var client = new HttpClient();
+
+        for (int i = 0; i < 10; i++)
+        {
+            using var response = await client.GetAsync(videoUrl);
+
+            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                // The video may take a few seconds to be available
+                await Task.Delay(TimeSpan.FromSeconds(2));
+                continue;
+            }
+
+            response.EnsureSuccessStatusCode();
+
+            string extension = Path.GetExtension(response.Content.Headers.ContentDisposition?.FileName) ?? ".mp4";
+            string fileName = GenerateFileName(testName, extension);
+            string path = Path.Combine(VideosDirectory, fileName);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(VideosDirectory);
+            }
+
+            using var file = File.OpenWrite(path);
+
+            using var stream = await response.Content.ReadAsStreamAsync();
+            await stream.CopyToAsync(file);
+
+            OutputHelper.WriteLine($"Video saved to {path}.");
+            break;
         }
     }
 }
