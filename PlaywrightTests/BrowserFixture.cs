@@ -44,7 +44,7 @@ public class BrowserFixture
 
             await using IBrowserContext context = await browser.NewContextAsync(options);
 
-            // Enable generating a trace, if enabled to use with trace.playwright.dev, if enabled
+            // Enable generating a trace, if enabled, to use with https://trace.playwright.dev
             if (Options.CaptureTrace)
             {
                 await context.Tracing.StartAsync(new TracingStartOptions()
