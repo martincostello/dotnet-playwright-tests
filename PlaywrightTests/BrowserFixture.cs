@@ -30,16 +30,34 @@ public class BrowserFixture
         Func<IPage, Task> action,
         [CallerMemberName] string testName = null)
     {
+        string activeTestName = Options.TestName ?? testName;
+
         // Create a new browser of the specified type
         using IPlaywright playwright = await Playwright.CreateAsync();
 
         string videoUrl = null;
 
-        await using (IBrowser browser = await CreateBrowserAsync(playwright, testName))
+        await using (IBrowser browser = await CreateBrowserAsync(playwright, activeTestName))
         {
+            // Create a new context for the test
+            BrowserNewContextOptions options = CreateContextOptions();
+
+            await using IBrowserContext context = await browser.NewContextAsync(options);
+
+            // Enable generating a trace, if enabled to use with trace.playwright.dev, if enabled
+            if (Options.CaptureTrace)
+            {
+                await context.Tracing.StartAsync(new TracingStartOptions()
+                {
+                    Screenshots = true,
+                    Snapshots = true,
+                    Sources = true,
+                    Title = activeTestName
+                });
+            }
+
             // Create a new page to use for the test
-            BrowserNewPageOptions options = CreatePageOptions();
-            IPage page = await browser.NewPageAsync(options);
+            IPage page = await context.NewPageAsync();
 
             // Capture output from the browser to the test logs
             page.Console += (_, e) => OutputHelper.WriteLine(e.Text);
@@ -56,7 +74,7 @@ public class BrowserFixture
             catch (Exception ex)
             {
                 // Try and capture a screenshot at the point the test failed
-                await TryCaptureScreenshotAsync(page, Options.TestName ?? testName);
+                await TryCaptureScreenshotAsync(page, activeTestName);
 
                 // Set the BrowserStack test status, if in use
                 await TrySetSessionStatusAsync(page, "failed", ex.Message);
@@ -64,7 +82,18 @@ public class BrowserFixture
             }
             finally
             {
-                videoUrl = await TryCaptureVideoAsync(page, Options.TestName ?? testName);
+                if (Options.CaptureTrace)
+                {
+                    string traceName = GenerateFileName(activeTestName, ".zip");
+                    string path = Path.Combine("traces", traceName);
+
+                    await context.Tracing.StopAsync(new TracingStopOptions()
+                    {
+                        Path = path
+                    });
+                }
+
+                videoUrl = await TryCaptureVideoAsync(page, activeTestName);
             }
         }
 
@@ -72,19 +101,19 @@ public class BrowserFixture
         {
             // For BrowserStack Automate we need to fetch and save the video after the browser
             // is disposed of as we can't get the video while the session is still running.
-            await CaptureBrowserStackVideoAsync(videoUrl, Options.TestName ?? testName);
+            await CaptureBrowserStackVideoAsync(videoUrl, activeTestName);
         }
     }
 
-    protected virtual BrowserNewPageOptions CreatePageOptions()
+    protected virtual BrowserNewContextOptions CreateContextOptions()
     {
-        var options = new BrowserNewPageOptions()
+        var options = new BrowserNewContextOptions()
         {
             Locale = "en-GB",
             TimezoneId = "Europe/London",
         };
 
-        if (BrowsersTestData.IsRunningInGitHubActions)
+        if (Options.CaptureVideo)
         {
             options.RecordVideoDir = Path.GetTempPath();
         }
@@ -144,7 +173,7 @@ public class BrowserFixture
                 ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
                 ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
-                ["name"] = Options.TestName ?? testName,
+                ["name"] = testName,
                 ["os"] = Options.OperatingSystem,
                 ["os_version"] = Options.OperatingSystemVersion,
                 ["project"] = Options.ProjectName ?? GetDefaultProject(),
@@ -258,7 +287,7 @@ public class BrowserFixture
         IPage page,
         string testName)
     {
-        if (!BrowsersTestData.IsRunningInGitHubActions || page.Video is null)
+        if (!Options.CaptureVideo || page.Video is null)
         {
             return null;
         }
