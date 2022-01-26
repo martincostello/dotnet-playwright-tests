@@ -45,9 +45,7 @@ public class BrowserFixture
             await using IBrowserContext context = await browser.NewContextAsync(options);
 
             // Enable generating a trace, if enabled, to use with https://trace.playwright.dev
-            // Tracing does not currently seem to work if using BrowserStack Automate. See
-            // https://github.com/martincostello/dotnet-playwright-tests/pull/40#issuecomment-1022215119.
-            if (Options.CaptureTrace && !Options.UseBrowserStack)
+            if (Options.CaptureTrace)
             {
                 await context.Tracing.StartAsync(new TracingStartOptions()
                 {
@@ -84,7 +82,7 @@ public class BrowserFixture
             }
             finally
             {
-                if (Options.CaptureTrace && !Options.UseBrowserStack)
+                if (Options.CaptureTrace)
                 {
                     string traceName = GenerateFileName(activeTestName, ".zip");
                     string path = Path.Combine("traces", traceName);
