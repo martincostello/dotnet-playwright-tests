@@ -1,2 +1,10 @@
 #! /usr/bin/env pwsh
-dotnet test --configuration Release --output ./artifacts
+
+$additionalArgs = @()
+
+if (![string]::IsNullOrEmpty($env:GITHUB_SHA)) {
+    $additionalArgs += "--logger"
+    $additionalArgs += "GitHubActions;report-warnings=false"
+}
+
+dotnet test --configuration Release --output ./artifacts $additionalArgs
