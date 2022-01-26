@@ -45,8 +45,8 @@ public class BrowserFixture
             await using IBrowserContext context = await browser.NewContextAsync(options);
 
             // Enable generating a trace, if enabled, to use with https://trace.playwright.dev
-            // Tracing does not currently seem to work if using BrowserStack Automate. See
-            // https://github.com/martincostello/dotnet-playwright-tests/pull/40#issuecomment-1022215119.
+            // Tracing does not currently work if using BrowserStack Automate.
+            // See https://github.com/microsoft/playwright-dotnet/issues/1972.
             if (Options.CaptureTrace && !Options.UseBrowserStack)
             {
                 await context.Tracing.StartAsync(new TracingStartOptions()
