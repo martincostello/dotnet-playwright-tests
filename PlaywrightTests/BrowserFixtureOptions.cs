@@ -24,6 +24,22 @@ public class BrowserFixtureOptions
     public string Build { get; set; }
 
     /// <summary>
+    /// Gets or sets a value indicating whether to capture traces.
+    /// </summary>
+    /// <remarks>
+    /// Take care to only enable traces in publicly accessible
+    /// repositories if your tests do not use sensitive information,
+    /// such as user credentials, in interactions with the browser.
+    /// Otherwise your traces might leak secrets to unauthorized third parties.
+    /// </remarks>
+    public bool CaptureTrace { get; set; } = BrowsersTestData.IsRunningInGitHubActions;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether to capture video.
+    /// </summary>
+    public bool CaptureVideo { get; set; } = BrowsersTestData.IsRunningInGitHubActions;
+
+    /// <summary>
     /// Gets or sets the optional operating system name.
     /// </summary>
     public string OperatingSystem { get; set; }
