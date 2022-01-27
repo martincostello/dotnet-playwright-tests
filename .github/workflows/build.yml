@@ -24,11 +24,6 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v1
 
-    - name: Install Playwright CLI
-      shell: pwsh
-      run: |
-        dotnet tool install --global Microsoft.Playwright.CLI
-
     - name: Configure BrowserStack credentials
       if: ${{ github.repository_owner == 'martincostello' && github.actor == 'martincostello' }}
       shell: pwsh
