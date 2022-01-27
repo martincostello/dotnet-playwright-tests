@@ -107,9 +107,6 @@ To clone and run the sample locally, run the following commands.
 git clone https://github.com/martincostello/dotnet-playwright-tests.git
 cd dotnet-playwright-tests
 
-# Install the Playwright CLI (only required on first usage)
-dotnet tool install --global Microsoft.Playwright.CLI
-
 # Run the tests
 dotnet test
 ```

@@ -7,7 +7,7 @@ using Xunit.Abstractions;
 
 namespace PlaywrightTests;
 
-public class SearchTests
+public class SearchTests : IAsyncLifetime
 {
     public SearchTests(ITestOutputHelper outputHelper)
     {
@@ -15,6 +15,20 @@ public class SearchTests
     }
 
     private ITestOutputHelper OutputHelper { get; }
+
+    public Task InitializeAsync()
+    {
+        int exitCode = Program.Main(new[] { "install" });
+
+        if (exitCode != 0)
+        {
+            throw new InvalidOperationException($"Playwright exited with code {exitCode}");
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public Task DisposeAsync() => Task.CompletedTask;
 
     [Theory]
     [ClassData(typeof(BrowsersTestData))]
