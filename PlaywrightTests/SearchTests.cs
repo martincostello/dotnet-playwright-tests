@@ -22,7 +22,7 @@ public class SearchTests : IAsyncLifetime
 
         if (exitCode != 0)
         {
-            throw new InvalidOperationException($"Playwright exited with code {exitCode}");
+            throw new InvalidOperationException($"Playwright exited with code {exitCode}.");
         }
 
         return Task.CompletedTask;
