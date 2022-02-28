@@ -22,7 +22,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v2
 
     - name: Configure BrowserStack credentials
       if: ${{ github.repository_owner == 'martincostello' && github.actor == 'martincostello' }}
