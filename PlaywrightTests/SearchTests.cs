@@ -68,7 +68,7 @@ public class SearchTests : IAsyncLifetime
             await page.Keyboard.PressAsync("Enter");
 
             // Wait for the results to load
-            await page.WaitForSelectorAsync("id=main");
+            await page.WaitForSelectorAsync("id=appbar");
 
             // Click through to the desired result
             await page.ClickAsync("a:has-text(\".NET\")");
