@@ -56,7 +56,7 @@ public class SearchTests : IAsyncLifetime
             await page.WaitForLoadStateAsync();
 
             // Dismiss any cookies dialog
-            IElementHandle element = await page.QuerySelectorAsync("text='I agree'");
+            IElementHandle element = await page.QuerySelectorAsync("text='Accept all'");
 
             if (element is not null)
             {
