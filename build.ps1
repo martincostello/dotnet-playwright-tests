@@ -7,4 +7,4 @@ if (![string]::IsNullOrEmpty($env:GITHUB_SHA)) {
     $additionalArgs += "GitHubActions;report-warnings=false"
 }
 
-dotnet test --configuration Release --output ./artifacts $additionalArgs
+dotnet test ./PlaywrightTests --configuration Release --output ./artifacts $additionalArgs
