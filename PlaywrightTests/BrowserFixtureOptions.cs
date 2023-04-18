@@ -32,7 +32,7 @@ public class BrowserFixtureOptions
     /// such as user credentials, in interactions with the browser.
     /// Otherwise your traces might leak secrets to unauthorized third parties.
     /// </remarks>
-    public bool CaptureTrace { get; set; } = BrowsersTestData.IsRunningInGitHubActions;
+    public bool CaptureTrace { get; set; } = false;
 
     /// <summary>
     /// Gets or sets a value indicating whether to capture video.
