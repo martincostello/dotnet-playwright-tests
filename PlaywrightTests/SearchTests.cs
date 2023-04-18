@@ -61,6 +61,8 @@ public class SearchTests : IAsyncLifetime
             if (element is not null)
             {
                 await element.ClickAsync();
+                await accept.WaitForElementStateAsync(ElementState.Hidden);
+                await Task.Delay(TimeSpan.FromSeconds(0.5));
             }
 
             // Search for the desired term
