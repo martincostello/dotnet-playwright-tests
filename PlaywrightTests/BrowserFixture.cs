@@ -49,7 +49,6 @@ public class BrowserFixture
             {
                 await context.Tracing.StartAsync(new TracingStartOptions()
                 {
-                    Name = "traces",
                     Screenshots = true,
                     Snapshots = true,
                     Sources = true,
