@@ -2,6 +2,8 @@
   <PropertyGroup>
     <ImplicitUsings>enable</ImplicitUsings>
     <TargetFramework>net8.0</TargetFramework>
+    <!-- HACK Workaround for https://github.com/dotnet/runtime/issues/87628#issuecomment-1593612508 -->
+    <TieredPGO>false</TieredPGO>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
