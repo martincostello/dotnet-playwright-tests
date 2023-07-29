@@ -164,7 +164,7 @@ public class BrowserFixture
                 typeof(IBrowser).Assembly.GetName()!.Version.ToString(3);
 
             // Use a consistent geolocation for predictable behaviour
-            const string LondonUK = "GB-LND";
+            const string UnitedKingdom = "GB";
 
             // Supported capabilities and operating systems are documented at the following URLs:
             // https://www.browserstack.com/automate/capabilities
@@ -174,7 +174,7 @@ public class BrowserFixture
                 ["browser"] = browser,
                 ["browserstack.accessKey"] = Options.BrowserStackCredentials.AccessKey,
                 ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
-                ["browserstack.geoLocation"] = LondonUK,
+                ["browserstack.geoLocation"] = UnitedKingdom,
                 ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
                 ["name"] = testName,
