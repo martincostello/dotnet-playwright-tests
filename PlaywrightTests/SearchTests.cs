@@ -62,12 +62,12 @@ public class SearchTests : IAsyncLifetime
             {
                 await element.ClickAsync();
                 await element.WaitForElementStateAsync(ElementState.Hidden);
-                await Task.Delay(TimeSpan.FromSeconds(0.5));
+                await Task.Delay(TimeSpan.FromSeconds(1));
             }
 
             // Search for the desired term
             await page.TypeAsync("[name='q']", ".net core");
-            await page.Keyboard.PressAsync("Enter");
+            await page.ClickAsync("input[value='Google Search']");
 
             // Wait for the results to load
             await page.WaitForSelectorAsync("id=appbar");
