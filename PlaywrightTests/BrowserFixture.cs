@@ -163,6 +163,9 @@ public class BrowserFixture
                 Options.PlaywrightVersion ??
                 typeof(IBrowser).Assembly.GetName()!.Version.ToString(3);
 
+            // Use a consistent geolocation for predictable behaviour
+            const string LondonUK = "GB-LND";
+
             // Supported capabilities and operating systems are documented at the following URLs:
             // https://www.browserstack.com/automate/capabilities
             // https://www.browserstack.com/list-of-browsers-and-platforms/playwright
@@ -171,6 +174,7 @@ public class BrowserFixture
                 ["browser"] = browser,
                 ["browserstack.accessKey"] = Options.BrowserStackCredentials.AccessKey,
                 ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
+                ["browserstack.geoLocation"] = LondonUK,
                 ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
                 ["name"] = testName,
