@@ -25,11 +25,14 @@ jobs:
       uses: actions/setup-dotnet@v3
 
     - name: Configure BrowserStack credentials
-      if: ${{ github.event.repository.fork == false && github.actor == 'martincostello' }}
+      if: github.event.repository.fork == false && github.actor == 'martincostello'
+      env:
+        BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
+        BROWSERSTACK_TOKEN: ${{ secrets.BROWSERSTACK_TOKEN }}
       shell: pwsh
       run: |
-        Write-Output "BROWSERSTACK_USERNAME=${{ secrets.BROWSERSTACK_USERNAME }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-        Write-Output "BROWSERSTACK_TOKEN=${{ secrets.BROWSERSTACK_TOKEN }}" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+        "BROWSERSTACK_USERNAME=${env:BROWSERSTACK_USERNAME}" | Out-File -FilePath $env:GITHUB_ENV -Append
+        "BROWSERSTACK_TOKEN=${env:BROWSERSTACK_TOKEN}" | Out-File -FilePath $env:GITHUB_ENV -Append
 
     - name: Build and Test
       shell: pwsh
@@ -39,12 +42,13 @@ jobs:
         DOTNET_NOLOGO: true
         DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
         DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+        FORCE_COLOR: 1
         NUGET_XMLDOC_MODE: skip
         TERM: xterm
 
     - name: Publish screenshots
       uses: actions/upload-artifact@v3
-      if: ${{ always() }}
+      if: ${{ !cancelled() }}
       with:
         name: screenshots
         path: ./artifacts/screenshots/*
@@ -52,7 +56,7 @@ jobs:
 
     - name: Publish traces
       uses: actions/upload-artifact@v3
-      if: ${{ always() }}
+      if: ${{ !cancelled() }}
       with:
         name: traces
         path: ./artifacts/traces/*
@@ -60,7 +64,7 @@ jobs:
 
     - name: Publish videos
       uses: actions/upload-artifact@v3
-      if: ${{ always() }}
+      if: ${{ !cancelled() }}
       with:
         name: videos
         path: ./artifacts/videos/*
