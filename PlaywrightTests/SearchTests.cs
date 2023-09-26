@@ -66,7 +66,7 @@ public class SearchTests : IAsyncLifetime
             }
 
             // Search for the desired term
-            await page.TypeAsync("[name='q']", ".net core");
+            await page.FillAsync("[name='q']", ".net core");
             await page.ClickAsync("input[value='Google Search']");
 
             // Wait for the results to load
