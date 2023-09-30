@@ -10,21 +10,13 @@ using Xunit.Abstractions;
 
 namespace PlaywrightTests;
 
-public class BrowserFixture
+public class BrowserFixture(
+    BrowserFixtureOptions options,
+    ITestOutputHelper outputHelper)
 {
     private const string VideosDirectory = "videos";
 
-    public BrowserFixture(
-        BrowserFixtureOptions options,
-        ITestOutputHelper outputHelper)
-    {
-        Options = options;
-        OutputHelper = outputHelper;
-    }
-
-    private BrowserFixtureOptions Options { get; }
-
-    private ITestOutputHelper OutputHelper { get; }
+    private BrowserFixtureOptions Options { get; } = options;
 
     public async Task WithPageAsync(
         Func<IPage, Task> action,
@@ -60,8 +52,8 @@ public class BrowserFixture
             IPage page = await context.NewPageAsync();
 
             // Capture output from the browser to the test logs
-            page.Console += (_, e) => OutputHelper.WriteLine(e.Text);
-            page.PageError += (_, e) => OutputHelper.WriteLine(e);
+            page.Console += (_, e) => outputHelper.WriteLine(e.Text);
+            page.PageError += (_, e) => outputHelper.WriteLine(e);
 
             try
             {
@@ -279,11 +271,11 @@ public class BrowserFixture
                 Path = path,
             });
 
-            OutputHelper.WriteLine($"Screenshot saved to {path}.");
+            outputHelper.WriteLine($"Screenshot saved to {path}.");
         }
         catch (Exception ex)
         {
-            OutputHelper.WriteLine("Failed to capture screenshot: " + ex);
+            outputHelper.WriteLine("Failed to capture screenshot: " + ex);
         }
     }
 
@@ -318,13 +310,13 @@ public class BrowserFixture
                 await page.Video.SaveAsAsync(path);
             }
 
-            OutputHelper.WriteLine($"Video saved to {path}.");
+            outputHelper.WriteLine($"Video saved to {path}.");
 
             return null;
         }
         catch (Exception ex)
         {
-            OutputHelper.WriteLine("Failed to capture video: " + ex);
+            outputHelper.WriteLine("Failed to capture video: " + ex);
             return null;
         }
     }
@@ -360,7 +352,7 @@ public class BrowserFixture
             using var stream = await response.Content.ReadAsStreamAsync();
             await stream.CopyToAsync(file);
 
-            OutputHelper.WriteLine($"Video saved to {path}.");
+            outputHelper.WriteLine($"Video saved to {path}.");
             break;
         }
     }
