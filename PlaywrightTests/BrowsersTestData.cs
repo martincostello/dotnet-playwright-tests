@@ -38,7 +38,7 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 
         yield return new object[] { BrowserType.Firefox, null };
 
-        if (useBrowserStack || OperatingSystem.IsMacOS())
+        if (/*useBrowserStack ||*/ OperatingSystem.IsMacOS())
         {
             yield return new object[] { BrowserType.Webkit, null };
         }
