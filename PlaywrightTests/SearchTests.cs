@@ -7,18 +7,11 @@ using Xunit.Abstractions;
 
 namespace PlaywrightTests;
 
-public class SearchTests : IAsyncLifetime
+public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
 {
-    public SearchTests(ITestOutputHelper outputHelper)
-    {
-        OutputHelper = outputHelper;
-    }
-
-    private ITestOutputHelper OutputHelper { get; }
-
     public Task InitializeAsync()
     {
-        int exitCode = Program.Main(new[] { "install" });
+        int exitCode = Program.Main(["install"]);
 
         if (exitCode != 0)
         {
@@ -48,7 +41,7 @@ public class SearchTests : IAsyncLifetime
         }
 
         // Create fixture that will provide an IPage to use for the test
-        var browser = new BrowserFixture(options, OutputHelper);
+        var browser = new BrowserFixture(options, outputHelper);
         await browser.WithPageAsync(async (page) =>
         {
             // Open the search engine

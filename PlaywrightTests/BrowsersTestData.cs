@@ -24,24 +24,24 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
     {
         bool useBrowserStack = UseBrowserStack;
 
-        yield return new[] { BrowserType.Chromium, null };
+        yield return [BrowserType.Chromium, null];
 
         if (useBrowserStack || !OperatingSystem.IsWindows())
         {
-            yield return new[] { BrowserType.Chromium, "chrome" };
+            yield return [BrowserType.Chromium, "chrome"];
         }
 
         if (useBrowserStack || !OperatingSystem.IsLinux())
         {
-            yield return new[] { BrowserType.Chromium, "msedge" };
+            yield return [BrowserType.Chromium, "msedge"];
         }
 
-        yield return new object[] { BrowserType.Firefox, null };
+        yield return [BrowserType.Firefox, null];
 
         /*
         if (useBrowserStack || OperatingSystem.IsMacOS())
         {
-            yield return new object[] { BrowserType.Webkit, null };
+            yield return [BrowserType.Webkit, null];
         }
         */
     }
