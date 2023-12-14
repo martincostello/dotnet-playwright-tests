@@ -52,7 +52,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: screenshots
+        name: screenshots-${{ matrix.os }}
         path: ./artifacts/screenshots/*
         if-no-files-found: ignore
 
@@ -60,7 +60,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: traces
+        name: traces-${{ matrix.os }}
         path: ./artifacts/traces/*
         if-no-files-found: ignore
 
@@ -68,6 +68,6 @@ jobs:
       uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
-        name: videos
+        name: videos-${{ matrix.os }}
         path: ./artifacts/videos/*
         if-no-files-found: ignore
