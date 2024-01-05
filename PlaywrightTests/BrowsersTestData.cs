@@ -1,13 +1,39 @@
 // Copyright (c) Martin Costello, 2021. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
-using System.Collections;
 using Microsoft.Playwright;
+using Xunit;
 
 namespace PlaywrightTests;
 
-public sealed class BrowsersTestData : IEnumerable<object[]>
+public sealed class BrowsersTestData : TheoryData<string, string>
 {
+    public BrowsersTestData()
+    {
+        bool useBrowserStack = UseBrowserStack;
+
+        Add(BrowserType.Chromium, null);
+
+        if (useBrowserStack || !OperatingSystem.IsWindows())
+        {
+            Add(BrowserType.Chromium, "chrome");
+        }
+
+        if (useBrowserStack || !OperatingSystem.IsLinux())
+        {
+            Add(BrowserType.Chromium, "msedge");
+        }
+
+        Add(BrowserType.Firefox, null);
+
+        /*
+        if (useBrowserStack || OperatingSystem.IsMacOS())
+        {
+            Add(BrowserType.Webkit, null);
+        }
+        */
+    }
+
     public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
 
     public static bool UseBrowserStack => BrowserStackCredentials() != default;
@@ -19,32 +45,4 @@ public sealed class BrowsersTestData : IEnumerable<object[]>
 
         return (userName, accessToken);
     }
-
-    public IEnumerator<object[]> GetEnumerator()
-    {
-        bool useBrowserStack = UseBrowserStack;
-
-        yield return [BrowserType.Chromium, null];
-
-        if (useBrowserStack || !OperatingSystem.IsWindows())
-        {
-            yield return [BrowserType.Chromium, "chrome"];
-        }
-
-        if (useBrowserStack || !OperatingSystem.IsLinux())
-        {
-            yield return [BrowserType.Chromium, "msedge"];
-        }
-
-        yield return [BrowserType.Firefox, null];
-
-        /*
-        if (useBrowserStack || OperatingSystem.IsMacOS())
-        {
-            yield return [BrowserType.Webkit, null];
-        }
-        */
-    }
-
-    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
