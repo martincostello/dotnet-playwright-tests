@@ -122,7 +122,6 @@ public class BrowserFixture(
 
         if (System.Diagnostics.Debugger.IsAttached)
         {
-            options.Devtools = true;
             options.Headless = false;
             options.SlowMo = 100;
         }
