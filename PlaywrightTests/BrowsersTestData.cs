@@ -19,7 +19,7 @@ public sealed class BrowsersTestData : TheoryData<string, string>
             Add(BrowserType.Chromium, "chrome");
         }
 
-        if (useBrowserStack || !OperatingSystem.IsLinux())
+        if (useBrowserStack || OperatingSystem.IsWindows())
         {
             Add(BrowserType.Chromium, "msedge");
         }
