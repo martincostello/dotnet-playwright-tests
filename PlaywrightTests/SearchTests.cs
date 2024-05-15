@@ -63,7 +63,7 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             await page.ClickAsync("input[value='Google Search']");
 
             // Wait for the results to load
-            await page.WaitForSelectorAsync("id=appbar");
+            await page.WaitForSelectorAsync("id=rcnt");
 
             // Click through to the desired result
             await page.ClickAsync("a:has-text(\".NET\")");
