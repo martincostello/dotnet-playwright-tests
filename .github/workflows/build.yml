@@ -5,6 +5,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main, dotnet-vnext ]
+  workflow_dispatch:
 
 jobs:
   build:
