@@ -4,7 +4,6 @@ about: Create a bug report to help us improve the sample
 title: ''
 labels: 'bug'
 assignees: ''
-
 ---
 
 <!--
