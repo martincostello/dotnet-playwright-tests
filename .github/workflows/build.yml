@@ -26,9 +26,7 @@ jobs:
       uses: actions/setup-dotnet@v4
 
     - name: Configure BrowserStack credentials
-      #if: github.event.repository.fork == false && github.actor == 'martincostello'
-      # HACK Skipfor now due to https://github.com/microsoft/playwright-dotnet/issues/2731
-      if: false
+      if: github.event.repository.fork == false && github.actor == 'martincostello'
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_TOKEN: ${{ secrets.BROWSERSTACK_TOKEN }}
