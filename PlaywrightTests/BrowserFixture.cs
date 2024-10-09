@@ -154,9 +154,6 @@ public class BrowserFixture(
                 Options.PlaywrightVersion ??
                 typeof(IBrowser).Assembly.GetName()!.Version.ToString(3);
 
-            // Use a consistent geolocation for predictable behaviour
-            const string UnitedKingdom = "GB";
-
             // Supported capabilities and operating systems are documented at the following URLs:
             // https://www.browserstack.com/automate/capabilities
             // https://www.browserstack.com/list-of-browsers-and-platforms/playwright
@@ -164,8 +161,7 @@ public class BrowserFixture(
             {
                 ["browser"] = browser,
                 ["browserstack.accessKey"] = Options.BrowserStackCredentials.AccessKey,
-                ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
-                ["browserstack.geoLocation"] = UnitedKingdom,
+                ["browserstack.username"] = Options.BrowserStackCredentials.UserName,                
                 ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
                 ["name"] = testName,
@@ -173,6 +169,12 @@ public class BrowserFixture(
                 ["os_version"] = Options.OperatingSystemVersion,
                 ["project"] = Options.ProjectName ?? GetDefaultProject(),
             };
+
+            /*
+            // Use a consistent geolocation for predictable behaviour - only supported for Enterprise plans
+            const string UnitedKingdom = "GB";
+            capabilities["browserstack.geoLocation"] = UnitedKingdom;
+            */
 
             // Serialize the capabilities as a JSON blob and pass to the
             // BrowserStack endpoint in the "caps" query string parameter.
