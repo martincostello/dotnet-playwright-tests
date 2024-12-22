@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Playwright;
-using Xunit.Abstractions;
+using Xunit;
 
 namespace PlaywrightTests;
 
@@ -161,7 +161,7 @@ public class BrowserFixture(
             {
                 ["browser"] = browser,
                 ["browserstack.accessKey"] = Options.BrowserStackCredentials.AccessKey,
-                ["browserstack.username"] = Options.BrowserStackCredentials.UserName,                
+                ["browserstack.username"] = Options.BrowserStackCredentials.UserName,
                 ["build"] = Options.Build ?? GetDefaultBuildNumber(),
                 ["client.playwrightVersion"] = playwrightVersion,
                 ["name"] = testName,

@@ -3,13 +3,12 @@
 
 using Microsoft.Playwright;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace PlaywrightTests;
 
 public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
 {
-    public Task InitializeAsync()
+    public ValueTask InitializeAsync()
     {
         int exitCode = Program.Main(["install"]);
 
@@ -18,10 +17,14 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             throw new InvalidOperationException($"Playwright exited with code {exitCode}.");
         }
 
-        return Task.CompletedTask;
+        return ValueTask.CompletedTask;
     }
 
-    public Task DisposeAsync() => Task.CompletedTask;
+    public ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        return ValueTask.CompletedTask;
+    }
 
     [Theory]
     [ClassData(typeof(BrowsersTestData))]
@@ -55,7 +58,7 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             {
                 await element.ClickAsync();
                 await element.WaitForElementStateAsync(ElementState.Hidden);
-                await Task.Delay(TimeSpan.FromSeconds(1));
+                await Task.Delay(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
             }
 
             // Search for the desired term
