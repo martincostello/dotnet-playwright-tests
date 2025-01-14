@@ -1,6 +1,6 @@
 # .NET Playwright Tests
 
-[![Build status](https://github.com/martincostello/dotnet-playwright-tests/workflows/build/badge.svg?branch=main&event=push)](https://github.com/martincostello/dotnet-playwright-tests/actions?query=workflow%3Abuild+branch%3Amain+event%3Apush)
+[![Build status](https://github.com/martincostello/dotnet-playwright-tests/actions/workflows/build.yml/badge.svg?branch=main&event=push)](https://github.com/martincostello/dotnet-playwright-tests/actions/workflows/build.yml?query=branch%3Amain+event%3Apush)
 
 A simple test implemented in .NET that uses [Playwright] for tests with
 multiple browsers, including support for [BrowserStack Automate].
