@@ -48,11 +48,11 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
         await browser.WithPageAsync(async (page) =>
         {
             // Open the search engine
-            await page.GotoAsync("https://www.google.com/");
+            await page.GotoAsync("https://www.bing.com/");
             await page.WaitForLoadStateAsync();
 
             // Dismiss any cookies dialog
-            IElementHandle element = await page.QuerySelectorAsync("text='Accept all'");
+            IElementHandle element = await page.QuerySelectorAsync("text='Accept'");
 
             if (element is not null)
             {
@@ -66,7 +66,7 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             await page.ClickAsync("input[value='Google Search']");
 
             // Wait for the results to load
-            await page.WaitForSelectorAsync("id=rcnt");
+            await page.WaitForSelectorAsync("[aria-label='Search Results']");
 
             // Click through to the desired result
             await page.ClickAsync("a:has-text(\".NET\")");
