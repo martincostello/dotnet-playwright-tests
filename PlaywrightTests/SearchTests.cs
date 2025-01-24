@@ -51,14 +51,21 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             await page.GotoAsync("https://www.bing.com/");
             await page.WaitForLoadStateAsync();
 
-            // Dismiss any cookies dialog
-            IElementHandle element = await page.QuerySelectorAsync("text='Accept'");
-
-            if (element is not null)
+            try
             {
-                await element.ClickAsync();
-                await element.WaitForElementStateAsync(ElementState.Hidden);
-                await Task.Delay(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
+                // Dismiss any cookies banner
+                IElementHandle element = await page.WaitForSelectorAsync("text='Accept'", new() { Timeout = 15_000 });
+
+                if (element is not null)
+                {
+                    await element.ClickAsync();
+                    await element.WaitForElementStateAsync(ElementState.Hidden);
+                    await Task.Delay(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
+                }
+            }
+            catch (TimeoutException)
+            {
+                // No banner
             }
 
             // Search for the desired term
