@@ -37,7 +37,7 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
             BrowserChannel = browserChannel,
         };
 
-        if (BrowsersTestData.UseBrowserStack)
+        if (await BrowsersTestData.UseBrowserStackAsync(TestContext.Current.CancellationToken))
         {
             options.BrowserStackCredentials = BrowsersTestData.BrowserStackCredentials();
             options.UseBrowserStack = true;

@@ -1,6 +1,7 @@
 // Copyright (c) Martin Costello, 2021. All rights reserved.
 // Licensed under the Apache 2.0 license. See the LICENSE file in the project root for full license information.
 
+using MartinCostello.BrowserStack.Automate;
 using Microsoft.Playwright;
 using Xunit;
 
@@ -10,7 +11,7 @@ public sealed class BrowsersTestData : TheoryData<string, string>
 {
     public BrowsersTestData()
     {
-        bool useBrowserStack = UseBrowserStack;
+        bool useBrowserStack = BrowserStackCredentials() != default;
 
         Add(BrowserType.Chromium, null);
 
@@ -36,7 +37,26 @@ public sealed class BrowsersTestData : TheoryData<string, string>
 
     public static bool IsRunningInGitHubActions { get; } = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("GITHUB_ACTIONS"));
 
-    public static bool UseBrowserStack => BrowserStackCredentials() != default;
+    public static async Task<bool> UseBrowserStackAsync(CancellationToken cancellationToken)
+    {
+        var credentials = BrowserStackCredentials();
+
+        if (credentials == default)
+        {
+            return false;
+        }
+
+        using var client = new BrowserStackAutomateClient(credentials.UserName, credentials.AccessToken);
+        var status = await client.GetStatusAsync(cancellationToken);
+
+        if (status.MaximumAllowedParallelSessions < 1 ||
+            status.ParallelSessionsRunning == status.MaximumAllowedParallelSessions)
+        {
+            return false;
+        }
+
+        return true;
+    }
 
     public static (string UserName, string AccessToken) BrowserStackCredentials()
     {

@@ -187,7 +187,14 @@ public class BrowserFixture(
                 Timeout = options.Timeout
             };
 
-            return await browserType.ConnectAsync(wsEndpoint, connectOptions);
+            try
+            {
+                return await browserType.ConnectAsync(wsEndpoint, connectOptions);
+            }
+            catch (PlaywrightException ex)
+            {
+                Assert.Skip($"Failed to start BrowserStack Automate session: {ex.Message}");
+            }
         }
 
         return await browserType.LaunchAsync(options);
