@@ -48,25 +48,32 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
         await browser.WithPageAsync(async (page) =>
         {
             // Open the search engine
-            await page.GotoAsync("https://www.google.com/");
+            await page.GotoAsync("https://www.bing.com/");
             await page.WaitForLoadStateAsync();
 
-            // Dismiss any cookies dialog
-            IElementHandle element = await page.QuerySelectorAsync("text='Accept all'");
-
-            if (element is not null)
+            try
             {
-                await element.ClickAsync();
-                await element.WaitForElementStateAsync(ElementState.Hidden);
-                await Task.Delay(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
+                // Dismiss any cookies banner
+                IElementHandle element = await page.WaitForSelectorAsync("text='Accept'", new() { Timeout = 15_000 });
+
+                if (element is not null)
+                {
+                    await element.ClickAsync();
+                    await element.WaitForElementStateAsync(ElementState.Hidden);
+                    await Task.Delay(TimeSpan.FromSeconds(1), TestContext.Current.CancellationToken);
+                }
+            }
+            catch (TimeoutException)
+            {
+                // No banner
             }
 
             // Search for the desired term
             await page.FillAsync("[name='q']", ".net core");
-            await page.ClickAsync("input[value='Google Search']");
+            await page.Keyboard.PressAsync("Enter");
 
             // Wait for the results to load
-            await page.WaitForSelectorAsync("id=rcnt");
+            await page.WaitForSelectorAsync("[aria-label='Search Results']");
 
             // Click through to the desired result
             await page.ClickAsync("a:has-text(\".NET\")");
