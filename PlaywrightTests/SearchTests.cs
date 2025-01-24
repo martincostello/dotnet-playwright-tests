@@ -63,7 +63,7 @@ public class SearchTests(ITestOutputHelper outputHelper) : IAsyncLifetime
 
             // Search for the desired term
             await page.FillAsync("[name='q']", ".net core");
-            await page.ClickAsync("input[value='Google Search']");
+            await page.Keyboard.PressAsync("Enter");
 
             // Wait for the results to load
             await page.WaitForSelectorAsync("[aria-label='Search Results']");
