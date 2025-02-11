@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1" />
     <PackageReference Include="MartinCostello.BrowserStack.Automate" Version="4.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="9.0.2" />
     <PackageReference Include="Microsoft.Playwright" Version="1.50.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.0.1" />
