@@ -3,11 +3,15 @@
   "build": {
     "dockerfile": "Dockerfile"
   },
-  "extensions": [
-    "dbaeumer.vscode-eslint",
-    "EditorConfig.EditorConfig",
-    "k--kato.docomment",
-    "ms-dotnettools.csharp",
-    "ms-vscode.PowerShell"
-  ]
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "EditorConfig.EditorConfig",
+        "k--kato.docomment",
+        "ms-dotnettools.csharp",
+        "ms-vscode.PowerShell"
+      ]
+    }
+  }
 }
