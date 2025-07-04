@@ -4,13 +4,30 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main, dotnet-vnext ]
+    branches:
+      - main
+      - dotnet-vnext
+      - dotnet-nightly
   workflow_dispatch:
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_GENERATE_ASPNET_CERTIFICATE: false
+  DOTNET_NOLOGO: true
+  DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
+  FORCE_COLOR: 3
+  NUGET_XMLDOC_MODE: skip
+  TERM: xterm
+
+permissions: {}
 
 jobs:
   build:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: read
 
     strategy:
       fail-fast: false
@@ -21,31 +38,20 @@ jobs:
 
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        filter: 'tree:0'
+        persist-credentials: false
+        show-progress: false
 
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
 
-    - name: Configure BrowserStack credentials
-      if: github.event.repository.fork == false && github.actor == 'martincostello'
+    - name: Build and Test
       env:
         BROWSERSTACK_USERNAME: ${{ secrets.BROWSERSTACK_USERNAME }}
         BROWSERSTACK_TOKEN: ${{ secrets.BROWSERSTACK_TOKEN }}
       shell: pwsh
-      run: |
-        "BROWSERSTACK_USERNAME=${env:BROWSERSTACK_USERNAME}" | Out-File -FilePath $env:GITHUB_ENV -Append
-        "BROWSERSTACK_TOKEN=${env:BROWSERSTACK_TOKEN}" | Out-File -FilePath $env:GITHUB_ENV -Append
-
-    - name: Build and Test
-      shell: pwsh
       run: ./build.ps1
-      env:
-        DOTNET_CLI_TELEMETRY_OPTOUT: true
-        DOTNET_NOLOGO: true
-        DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
-        DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: 1
-        FORCE_COLOR: 1
-        NUGET_XMLDOC_MODE: skip
-        TERM: xterm
 
     - name: Publish screenshots
       uses: actions/upload-artifact@v4
