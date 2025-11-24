@@ -9,7 +9,7 @@
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="GitHubActionsTestLogger" Version="3.0.0" />
+    <PackageReference Include="GitHubActionsTestLogger" Version="3.0.1" />
     <PackageReference Include="MartinCostello.BrowserStack.Automate" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.0" />
     <PackageReference Include="Microsoft.Playwright" Version="1.56.0" />
