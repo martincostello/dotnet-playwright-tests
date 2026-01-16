@@ -20,7 +20,7 @@ env:
   FORCE_COLOR: 3
   TERM: xterm
   # renovate: datasource=github-releases depName=zizmor packageName=zizmorcore/zizmor
-  ZIZMOR_VERSION: '1.20.0'
+  ZIZMOR_VERSION: '1.21.0'
 
 jobs:
   lint:
