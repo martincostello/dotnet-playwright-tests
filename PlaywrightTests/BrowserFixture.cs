@@ -107,7 +107,7 @@ public class BrowserFixture(
 
         if (Options.CaptureVideo)
         {
-            options.RecordVideoDir = Path.GetTempPath();
+            options.RecordVideoDir = Directory.CreateTempSubdirectory("playwright-videos").FullName;
         }
 
         return options;
