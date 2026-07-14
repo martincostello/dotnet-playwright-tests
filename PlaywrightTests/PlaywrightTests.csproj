@@ -13,7 +13,7 @@
     <PackageReference Include="MartinCostello.BrowserStack.Automate" Version="4.2.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="10.0.9" />
     <PackageReference Include="Microsoft.Playwright" Version="1.61.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.7.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.8.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageReference Include="xunit.v3.mtp-off" Version="3.2.2" />
   </ItemGroup>
